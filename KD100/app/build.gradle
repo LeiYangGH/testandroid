@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'kd100'
+            keyPassword '123456'
+            storeFile file('C:/G/testandroid/KD100/signfile.jks')
+            storePassword '123456'
+        }
+        kd100 {
+            keyAlias 'kd100'
+            keyPassword '123456'
+            storeFile file('C:/G/testandroid/KD100/kd100sign.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
     defaultConfig {
@@ -15,12 +29,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.kd100
+        }
+        debug {
+            signingConfig signingConfigs.kd100
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
