@@ -36,6 +36,7 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteY="8dp"
         app:layout_constraintLeft_toRightOf="@+id/txtNO"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="0.6" />
 
 </android.support.constraint.ConstraintLayout>
