@@ -21,23 +21,9 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by YLei on 2017-05-17.
  */
 
-public class CallAPI extends AsyncTask<String, String, String> {
+public class CallAPI extends AsyncTask<KdData, String, String> {
 
-    @Override
-    protected String doInBackground(String... params) {
-        HashMap<String, String> ps=new HashMap<String, String>();
-                //*
-                ps.put("type", "jd");
-                ps.put("postid", "50460919160");
-                ps.put("id", "1");
-                //*/
-        String webcontent=performPostCall("http://www.kuaidi100.com/query",ps);
-        // String webcontent=performPostCall("http://www.baidu.com/",null);
-
-        //String webcontent=performPostCall("http://www.baidu.com/",ps);
-        //String webcontent=performPostCall("http://www.sina.com.cn/",ps);
-        return webcontent;
-    }
+ 
 
     private static URLConnection reload(URLConnection uc) throws Exception {
 
@@ -56,7 +42,7 @@ public class CallAPI extends AsyncTask<String, String, String> {
         URL url;
 
         String response = "";
-        response+="try";
+        //response+="try";
         try {
             url = new URL(requestURL);
             //response+=requestURL;
@@ -82,9 +68,9 @@ public class CallAPI extends AsyncTask<String, String, String> {
             int responseCode=conn.getResponseCode();
 
             response+="responseCode="+String.valueOf(responseCode)+"=";
-            //if (responseCode == HttpsURLConnection.HTTP_OK) {
-                if (true) {
-                response+="responseCode";
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+               // if (true) {
+                //response+="responseCode";
                 String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line=br.readLine()) != null) {
@@ -92,7 +78,7 @@ public class CallAPI extends AsyncTask<String, String, String> {
                 }
             }
             else {
-                response+="!responseCode";
+                //response+="!responseCode";
 
             }
         } catch (Exception e) {
@@ -119,5 +105,19 @@ public class CallAPI extends AsyncTask<String, String, String> {
         }
 
         return result.toString();
+    }
+
+    @Override
+    protected String doInBackground(KdData... params) {
+       KdData data=params[0];
+            HashMap<String, String> ps=new HashMap<String, String>();
+            //*
+            ps.put("type", data.typ);
+            ps.put("postid", data.no);
+            ps.put("id", "1");
+            //*/
+            String webcontent=performPostCall("http://www.kuaidi100.com/query",ps);
+
+            return webcontent;
     }
 }

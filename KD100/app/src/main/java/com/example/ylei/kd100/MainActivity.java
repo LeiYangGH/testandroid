@@ -27,36 +27,43 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnQuery;
     EditText txtNO;
+    EditText txtType;
     TextView txtMsg;
 String msg="";
+    String no="";
+    String typ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnQuery = (Button) findViewById(R.id.btnQuery);
         txtNO = (EditText) findViewById(R.id.txtNO);
+        txtType = (EditText) findViewById(R.id.txtType);
         txtMsg = (TextView) findViewById(R.id.txtMsg);
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        String no = prefs.getString("no", "112233");
-        txtMsg.setText(no);
-
+             no = prefs.getString("no", "112233");
+            typ = prefs.getString("typ", "jd");
+        txtNO.setText(no);
+        txtType.setText(typ);
         btnQuery.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 btnQuery.setEnabled(false);
-                String no= txtNO.getText().toString();
-
+                  no= txtNO.getText().toString();
+                typ= txtType.getText().toString();
 
                 SharedPreferences sharedPref =  getPreferences(MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("no", no);
+                editor.putString("typ", typ);
                 editor.commit();
 
                 String webcontent= null;
                 try {
-                    webcontent = (new CallAPI()).execute("","","").get();
+                    KdData data =new KdData(no,typ);
+                    webcontent = (new CallAPI()).execute(data,null,null).get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -64,7 +71,7 @@ String msg="";
                 }
 
 
-                webcontent+="done in main";
+            //    webcontent+="done in main";
                 txtMsg.setText(webcontent);
                 btnQuery.setEnabled(true);
                 //txtNO.setText(msg);
