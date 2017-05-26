@@ -14,6 +14,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
     DrawingView dv ;
     private Paint mPaint;
+    private int drawType=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +40,12 @@ public class MainActivity extends AppCompatActivity {
         private Path mPath;
         private Paint   mBitmapPaint;
         Context context;
-        private Paint circlePaint;
-        private Path circlePath;
 
         public DrawingView(Context c) {
             super(c);
             context=c;
             mPath = new Path();
             mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-            circlePaint = new Paint();
-            circlePath = new Path();
-            circlePaint.setAntiAlias(true);
-            circlePaint.setColor(Color.BLUE);
-            circlePaint.setStyle(Paint.Style.STROKE);
-            circlePaint.setStrokeJoin(Paint.Join.MITER);
-            circlePaint.setStrokeWidth(4f);
         }
 
         @Override
@@ -70,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
             canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
             canvas.drawPath( mPath,  mPaint);
-            canvas.drawPath( circlePath,  circlePaint);
         }
 
         private float mX, mY;
@@ -90,15 +81,11 @@ public class MainActivity extends AppCompatActivity {
                 mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
                 mX = x;
                 mY = y;
-
-                circlePath.reset();
-                circlePath.addCircle(mX, mY, 30, Path.Direction.CW);
             }
         }
 
         private void touch_up() {
             mPath.lineTo(mX, mY);
-            circlePath.reset();
             // commit the path to our offscreen
             mCanvas.drawPath(mPath,  mPaint);
             // kill this so we don't double draw
