@@ -99,15 +99,24 @@ public class MainActivity extends AppCompatActivity {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    touch_start(x, y);
+                    drawType++;
+                    if(drawType>4)
+                        drawType=1;
+                    if(drawType==4) {
+                        touch_start(x, y);
+                    }
                     invalidate();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    touch_move(x, y);
+                    if(drawType==4) {
+                        touch_move(x, y);
+                    }
                     invalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    touch_up();
+                    if(drawType==4) {
+                        touch_up();
+                    }
                     invalidate();
                     break;
             }
