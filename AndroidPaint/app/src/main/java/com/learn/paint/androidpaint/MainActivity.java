@@ -63,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
             canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
 
 
-                                  if(drawType==1) {
-                                    //  mCanvas.drawLine(0, 0, 100, 100, mPaint);
-                                      mCanvas.drawLine(mX0, mY0, mX, mY, mPaint);
-                                  }
-                                                else if(drawType==4) {
-                                      canvas.drawPath( mPath,  mPaint);
+              if(drawType==1) {
+                  mCanvas.drawLine(mX0, mY0, mX, mY, mPaint);
+              }
+          else  if(drawType==2) {
+                mCanvas.drawRect(mX0, mY0, mX, mY, mPaint);
+            }
+             else if(drawType==4) {
+               canvas.drawPath( mPath,  mPaint);
             }
         }
 
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void touch_start(float x, float y) {
 
-            if(drawType==1) {
+            if(drawType==1 ||drawType==2 ) {
                 mX0 = x;
                 mY0 = y;
             }
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void touch_move(float x, float y) {
 
-            if(drawType==1) {
+            if(drawType==1 ||drawType==2) {
                 float dx = Math.abs(x - mX0);
                 float dy = Math.abs(y - mY0);
                 if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
