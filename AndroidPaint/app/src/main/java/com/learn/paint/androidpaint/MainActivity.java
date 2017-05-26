@@ -69,7 +69,13 @@ public class MainActivity extends AppCompatActivity {
           else  if(drawType==2) {
                 mCanvas.drawRect(mX0, mY0, mX, mY, mPaint);
             }
+              else  if(drawType==3) {
+                  double r=Math.sqrt((mX-mX0)*(mX-mX0)+(mY-mY0)*(mY-mY0));
+                  mCanvas.drawCircle(mX0, mY0,  (float) r, mPaint);
+              }
              else if(drawType==4) {
+                  mPaint.setColor(Color.WHITE);
+                  mPaint.setStrokeWidth(200);
                canvas.drawPath( mPath,  mPaint);
             }
         }
@@ -80,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void touch_start(float x, float y) {
 
-            if(drawType==1 ||drawType==2 ) {
+            if(drawType==1 ||drawType==2 ||drawType==3) {
                 mX0 = x;
                 mY0 = y;
             }
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void touch_move(float x, float y) {
 
-            if(drawType==1 ||drawType==2) {
+            if(drawType==1 ||drawType==2 ||drawType==3) {
                 float dx = Math.abs(x - mX0);
                 float dy = Math.abs(y - mY0);
                 if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
