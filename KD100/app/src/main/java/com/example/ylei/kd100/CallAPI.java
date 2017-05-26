@@ -23,7 +23,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class CallAPI extends AsyncTask<KdData, String, String> {
 
- 
+
 
     private static URLConnection reload(URLConnection uc) throws Exception {
 
