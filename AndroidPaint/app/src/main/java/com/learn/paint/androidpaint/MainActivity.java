@@ -21,22 +21,27 @@ import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
 public class MainActivity extends AppCompatActivity implements ColorPickerDialogListener,OnClickListener  {
     DrawingView dv ;
     private Paint mPaint;
+    private  int selectedColor=Color.GREEN;
     private int drawType=1;
     private RadioButton rdbLine;
     private RadioButton rdbRect;
     private RadioButton rdbCircle;
+    private RadioButton rdbCurve;
     private RadioButton rdbErase;
     private Button btnColor;
     private void resetPaint()
     {
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setColor(Color.GREEN);
+        mPaint.setColor(this.selectedColor);
+        mPaint.setStrokeWidth(12);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(12);
+
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -58,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
             case 0:
                 // We got result from the dialog that is shown when clicking on the icon in the action bar.
                 Toast.makeText(MainActivity.this, "Selected Color: #" + Integer.toHexString(color), Toast.LENGTH_SHORT).show();
+                if(drawType!=5) {
+                    this.selectedColor = color;
+                    mPaint.setColor(color);
+                }
                 break;
         }
     }
@@ -73,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         this.rdbLine=(RadioButton) findViewById(R.id.rdbLine);
         this.rdbRect=(RadioButton) findViewById(R.id.rdbRect);
         this.rdbCircle=(RadioButton) findViewById(R.id.rdbCircle);
+        this.rdbCurve=(RadioButton) findViewById(R.id.rdbCurve);
         this.rdbErase=(RadioButton) findViewById(R.id.rdbErase);
         this.btnColor=(Button) findViewById(R.id.btnColor);
         btnColor.setOnClickListener(this);
@@ -82,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 drawType=1;
                 rdbRect.setChecked(false);
                 rdbCircle.setChecked(false);
+                rdbCurve.setChecked(false);
                 rdbErase.setChecked(false);
             }
         });
@@ -91,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 drawType=2;
                 rdbLine.setChecked(false);
                 rdbCircle.setChecked(false);
+                rdbCurve.setChecked(false);
                 rdbErase.setChecked(false);
             }
         });
@@ -100,15 +112,31 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 drawType=3;
                 rdbLine.setChecked(false);
                 rdbRect.setChecked(false);
+                rdbCurve.setChecked(false);
                 rdbErase.setChecked(false);
             }
         });
-        rdbErase.setOnClickListener(new View.OnClickListener() {
+
+        rdbCurve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawType=4;
+                mPaint.setColor(MainActivity.this.selectedColor);
+                mPaint.setStrokeWidth(12);
                 rdbLine.setChecked(false);
                 rdbRect.setChecked(false);
+                rdbCircle.setChecked(false);
+                rdbErase.setChecked(false);
+            }
+        });
+
+        rdbErase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawType=5;
+                rdbLine.setChecked(false);
+                rdbRect.setChecked(false);
+                rdbCurve.setChecked(false);
                 rdbCircle.setChecked(false);
 
             }
@@ -127,15 +155,7 @@ else {
 //*/
 
         mPaint = new Paint();
-        /*
-        mPaint.setAntiAlias(true);
-        mPaint.setDither(true);
-        mPaint.setColor(Color.GREEN);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(12);
-        */
+
         resetPaint();
     }
 
@@ -187,7 +207,14 @@ else {
                   double r=Math.sqrt((mX-mX0)*(mX-mX0)+(mY-mY0)*(mY-mY0));
                   mCanvas.drawCircle(mX0, mY0,  (float) r, mPaint);
               }
-             else if(drawType==4) {
+              else  if(drawType==4) {
+
+                  canvas.drawPath( mPath,  mPaint);
+              }
+            //mPaint.setColor(this.selectedColor);
+          //  mPaint.setStrokeWidth(12);
+
+             else if(drawType==5) {
                   mPaint.setColor(Color.WHITE);
                   mPaint.setStrokeWidth(200);
                canvas.drawPath( mPath,  mPaint);
@@ -204,7 +231,7 @@ else {
                 mX0 = x;
                 mY0 = y;
             }
-            else if(drawType==4) {
+            else if(drawType==4 || drawType==5) {
                 mPath.reset();
                 mPath.moveTo(x, y);
                 mX = x;
@@ -225,7 +252,7 @@ else {
                     mY = y;
                 }
             }
-            else if(drawType==4) {
+            else if(drawType==4 || drawType==5) {
                 float dx = Math.abs(x - mX);
                 float dy = Math.abs(y - mY);
                 if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
@@ -240,7 +267,7 @@ else {
             if(drawType==1) {
 
             }
-            else if(drawType==4) {
+            else if(drawType==4 || drawType==5) {
                 mPath.lineTo(mX, mY);
                 // commit the path to our offscreen
                 mCanvas.drawPath(mPath, mPaint);
@@ -258,13 +285,13 @@ else {
                 case MotionEvent.ACTION_DOWN:
 
                     touch_start(x, y);
-                    if(drawType==4) {
+                    if(drawType==4 || drawType==5) {
                         invalidate();
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
                     touch_move(x, y);
-                    if(drawType==4) {
+                    if(drawType==4 || drawType==5) {
                         invalidate();
                     }
                     break;
