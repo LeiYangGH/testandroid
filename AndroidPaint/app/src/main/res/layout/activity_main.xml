@@ -43,6 +43,13 @@
                 android:text="擦除"
                 />
 
+        <android.widget.Button
+            android:id="@+id/btnColor"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:text="color"
+            />
+
 
 
         </LinearLayout>

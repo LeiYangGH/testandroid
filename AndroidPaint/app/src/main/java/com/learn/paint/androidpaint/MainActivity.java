@@ -10,10 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
+import android.view.View.OnClickListener;
+import com.jrummyapps.android.colorpicker.ColorPickerDialog;
+import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ColorPickerDialogListener,OnClickListener  {
     DrawingView dv ;
     private Paint mPaint;
     private int drawType=1;
@@ -21,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rdbRect;
     private RadioButton rdbCircle;
     private RadioButton rdbErase;
-
+    private Button btnColor;
     private void resetPaint()
     {
         mPaint.setAntiAlias(true);
@@ -34,6 +39,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        ColorPickerDialog.newBuilder()
+                .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
+                .setAllowPresets(false)
+                .setDialogId(0)
+                .setColor(Color.BLACK)
+                .setShowAlphaSlider(true)
+                .show(this);
+    }
+
+    @Override public void onDialogDismissed(int dialogId) {
+
+    }
+    @Override public void onColorSelected(int dialogId, int color) {
+        switch (dialogId) {
+            case 0:
+                // We got result from the dialog that is shown when clicking on the icon in the action bar.
+                Toast.makeText(MainActivity.this, "Selected Color: #" + Integer.toHexString(color), Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -44,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         this.rdbRect=(RadioButton) findViewById(R.id.rdbRect);
         this.rdbCircle=(RadioButton) findViewById(R.id.rdbCircle);
         this.rdbErase=(RadioButton) findViewById(R.id.rdbErase);
-
+        this.btnColor=(Button) findViewById(R.id.btnColor);
+        btnColor.setOnClickListener(this);
         rdbLine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
         dv = new DrawingView(this);
 if(linearLayout==null) {
