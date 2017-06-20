@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
     <!--android:layout_gravity="center"-->
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-
+        android:weightSum="1"
         >
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="50dp"
             android:gravity="center">
@@ -56,7 +56,7 @@
             android:text="Button2"
             tools:layout_editor_absoluteX="218dp"
             tools:layout_editor_absoluteY="53dp"
-            android:layout_weight="1"
+            android:layout_weight="0.2"
             android:layout_gravity="top"/>
 
         <Button
@@ -66,7 +66,7 @@
             android:text="Button3"
             tools:layout_editor_absoluteX="218dp"
             tools:layout_editor_absoluteY="53dp"
-            android:layout_weight="2"
+            android:layout_weight="0.2"
             android:layout_gravity="top"/>
     </LinearLayout>
 
